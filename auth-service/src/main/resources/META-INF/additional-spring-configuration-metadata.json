@@ -1,0 +1,5 @@
+{"properties": [{
+  "name": "mysql-service.base-url",
+  "type": "java.lang.String",
+  "description": "La URL del servicio que maneja la base de datos relacional."
+}]}
