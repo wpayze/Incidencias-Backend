@@ -1,8 +1,6 @@
 package com.incidenciasvlc.mysqlservice.service;
 
-import com.incidenciasvlc.mysqlservice.model.Role;
 import com.incidenciasvlc.mysqlservice.model.User;
-import com.incidenciasvlc.mysqlservice.repository.RoleRepository;
 import com.incidenciasvlc.mysqlservice.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -14,9 +12,6 @@ public class UserService {
     @Autowired
     private UserRepository userRepository;
 
-    @Autowired
-    private RoleRepository roleRepository;
-
     public List<User> findAllUsers() {
         return userRepository.findAll();
     }
@@ -26,6 +21,10 @@ public class UserService {
     }
 
     public User createUser(User user) {
+        if (userRepository.existsByEmail(user.getEmail())) {
+            throw new RuntimeException("El correo electrónico ya está en uso.");
+        }
+        
         return userRepository.save(user);
     }
 
@@ -36,11 +35,7 @@ public class UserService {
         user.setName(userDetails.getName());
         user.setEmail(userDetails.getEmail());
         user.setPassword(userDetails.getPassword());
-
-        Role role = roleRepository.findById(userDetails.getRole().getId())
-                .orElseThrow(
-                        () -> new RuntimeException("Rol no encontrado con el id: " + userDetails.getRole().getId()));
-        user.setRole(role);
+        user.setRole(userDetails.getRole());
 
         return userRepository.save(user);
     }

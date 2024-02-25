@@ -8,6 +8,17 @@
             "mainClass": "com.incidenciasvlc.mysqlservice.MySqlServiceApplication",
             "projectName": "mysql-service",
             "args": "",
+            "envFile": "${workspaceFolder}/.env",
+            "vmArgs": " -Dcom.sun.management.jmxremote -Dcom.sun.management.jmxremote.port=54917 -Dcom.sun.management.jmxremote.authenticate=false -Dcom.sun.management.jmxremote.ssl=false -Dspring.jmx.enabled=true -Djava.rmi.server.hostname=localhost -Dspring.application.admin.enabled=true -Dspring.boot.project.name=mysql-service"
+        },
+        {
+            "type": "java",
+            "name": "Spring Boot-AuthServiceApplication<auth-service>",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "mainClass": "com.incidenciasvlc.authservice.AuthServiceApplication",
+            "projectName": "auth-service",
+            "args": "",
             "envFile": "${workspaceFolder}/.env"
         }
     ]
