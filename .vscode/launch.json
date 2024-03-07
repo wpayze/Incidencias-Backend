@@ -19,6 +19,17 @@
             "mainClass": "com.incidenciasvlc.authservice.AuthServiceApplication",
             "projectName": "auth-service",
             "args": "",
+            "envFile": "${workspaceFolder}/.env",
+            "vmArgs": " -Dcom.sun.management.jmxremote -Dcom.sun.management.jmxremote.port=63212 -Dcom.sun.management.jmxremote.authenticate=false -Dcom.sun.management.jmxremote.ssl=false -Dspring.jmx.enabled=true -Djava.rmi.server.hostname=localhost -Dspring.application.admin.enabled=true -Dspring.boot.project.name=auth-service"
+        },
+        {
+            "type": "java",
+            "name": "Spring Boot-IssueServiceApplication<issue-service>",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "mainClass": "com.incidenciasvlc.issueservice.IssueServiceApplication",
+            "projectName": "issue-service",
+            "args": "",
             "envFile": "${workspaceFolder}/.env"
         }
     ]
