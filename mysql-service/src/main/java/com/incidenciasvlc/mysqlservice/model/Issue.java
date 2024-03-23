@@ -27,8 +27,14 @@ public class Issue {
     @Column(name = "description", columnDefinition = "TEXT")
     private String description;
 
-    @Column(name = "location", length = 255)
-    private String location;
+    @Column(name = "address", length = 255)
+    private String address;
+
+    @Column(name = "latitude")
+    private Double latitude;
+
+    @Column(name = "longitude")
+    private Double longitude;
 
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)

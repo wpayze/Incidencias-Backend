@@ -17,8 +17,11 @@ public class Issue {
     @NotBlank(message = "La descripción es obligatoria")
     private String description;
 
-    @Size(max = 255, message = "La ubicación no puede tener más de 255 caracteres")
-    private String location;
+    @Size(max = 255, message = "La dirección no puede tener más de 255 caracteres")
+    private String address;
+
+    private Double latitude;
+    private Double longitude;
 
     private User user;
     private Category category;

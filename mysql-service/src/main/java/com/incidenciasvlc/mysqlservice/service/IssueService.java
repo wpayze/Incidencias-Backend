@@ -32,7 +32,8 @@ public class IssueService {
         
         issue.setTitle(issueDetails.getTitle());
         issue.setDescription(issueDetails.getDescription());
-        issue.setLocation(issueDetails.getLocation());
+        issue.setLatitude(issueDetails.getLatitude());
+        issue.setLongitude(issueDetails.getLongitude());
         issue.setUser(issueDetails.getUser());
         issue.setCategory(issueDetails.getCategory());
         issue.setStatus(issueDetails.getStatus());
