@@ -2,6 +2,9 @@ package com.incidenciasvlc.issueservice.model;
 
 import lombok.Getter;
 import lombok.Setter;
+
+import java.util.Date;
+
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 
@@ -29,4 +32,7 @@ public class Issue {
 
     @Size(max = 255, message = "La URL de la imagen no puede tener más de 255 caracteres")
     private String imageUrl;
+
+    private Date createdAt;
+    private Date updatedAt;
 }

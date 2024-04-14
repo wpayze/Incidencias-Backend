@@ -1,5 +1,10 @@
 package com.incidenciasvlc.mysqlservice.model;
 
+import java.util.Date;
+
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -50,4 +55,12 @@ public class Issue {
 
     @Column(name = "image_url", length = 255)
     private String imageUrl;
+
+    @Column(name = "created_at", nullable = false, updatable = false)
+    @CreationTimestamp
+    private Date createdAt;
+
+    @Column(name = "updated_at")
+    @UpdateTimestamp
+    private Date updatedAt;
 }
