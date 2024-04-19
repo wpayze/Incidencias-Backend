@@ -5,6 +5,7 @@ import com.incidenciasvlc.authservice.model.User;
 import com.incidenciasvlc.authservice.security.JwtTokenService;
 import com.incidenciasvlc.authservice.security.JwtTokenUtil;
 
+import java.util.HashMap;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,12 +44,20 @@ public class AuthService {
     }
 
     public Mono<ResponseEntity<?>> validateLoginAndGenerateToken(String email, String password) {
+        if (email == null || email.trim().isEmpty() || password == null || password.trim().isEmpty()) {
+            return Mono.just(ResponseEntity.badRequest().body("Email y contraseña no pueden estar vacíos"));
+        }
+
         return mysqlServiceClient.getUserByEmail(email)
                 .flatMap(user -> {
                     if (passwordEncoder.matches(password, user.getPassword())) {
                         user.setPassword(null);
                         String token = jwtTokenService.generateToken(user);
-                        return Mono.just(ResponseEntity.ok().body(Map.of("token", token)));
+                        Map<String, Object> response = new HashMap<>();
+                        response.put("token", token);
+                        response.put("user", user);
+                        
+                        return Mono.just(ResponseEntity.ok().body(response));
                     } else {
                         return Mono.just(ResponseEntity.status(401).body("Credenciales incorrectas"));
                     }
