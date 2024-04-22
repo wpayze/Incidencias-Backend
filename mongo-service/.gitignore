@@ -1,0 +1,25 @@
+# Dependencias
+node_modules/
+
+# Archivos de entorno
+.env
+
+# Logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Directorios de depuración
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Sistema de archivos
+.DS_Store
+
+# Directorios de salida
+/dist
+/build

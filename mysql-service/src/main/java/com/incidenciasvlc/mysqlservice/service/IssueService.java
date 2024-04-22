@@ -29,16 +29,24 @@ public class IssueService {
     public Issue updateIssue(Long id, Issue issueDetails) {
         Issue issue = issueRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Incidencia no encontrada con id " + id));
-        
-        issue.setTitle(issueDetails.getTitle());
-        issue.setDescription(issueDetails.getDescription());
-        issue.setLatitude(issueDetails.getLatitude());
-        issue.setLongitude(issueDetails.getLongitude());
-        issue.setUser(issueDetails.getUser());
-        issue.setCategory(issueDetails.getCategory());
-        issue.setStatus(issueDetails.getStatus());
-        issue.setImageUrl(issueDetails.getImageUrl());
-        
+
+        if (issueDetails.getTitle() != null)
+            issue.setTitle(issueDetails.getTitle());
+        if (issueDetails.getDescription() != null)
+            issue.setDescription(issueDetails.getDescription());
+        if (issueDetails.getLatitude() != null)
+            issue.setLatitude(issueDetails.getLatitude());
+        if (issueDetails.getLongitude() != null)
+            issue.setLongitude(issueDetails.getLongitude());
+        if (issueDetails.getUser() != null)
+            issue.setUser(issueDetails.getUser());
+        if (issueDetails.getCategory() != null)
+            issue.setCategory(issueDetails.getCategory());
+        if (issueDetails.getStatus() != null)
+            issue.setStatus(issueDetails.getStatus());
+        if (issueDetails.getImageUrl() != null)
+            issue.setImageUrl(issueDetails.getImageUrl());
+
         return issueRepository.save(issue);
     }
 
