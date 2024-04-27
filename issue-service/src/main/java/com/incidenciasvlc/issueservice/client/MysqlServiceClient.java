@@ -1,12 +1,18 @@
 package com.incidenciasvlc.issueservice.client;
 
+import java.util.List;
+import java.util.Set;
+import java.util.ArrayList;
+
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.client.WebClient;
+import org.springframework.web.util.UriComponentsBuilder;
 
 import com.incidenciasvlc.issueservice.model.Category;
 import com.incidenciasvlc.issueservice.model.Issue;
 import com.incidenciasvlc.issueservice.model.Status;
+import com.incidenciasvlc.issueservice.model.User;
 
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -21,6 +27,19 @@ public class MysqlServiceClient {
                 .baseUrl(baseUrl)
                 .build();
     }
+
+    public Flux<User> getUsersByIds(Set<Integer> userIds) {
+        List<Integer> userIdsList = new ArrayList<>(userIds);
+    
+        UriComponentsBuilder builder = UriComponentsBuilder.fromUriString("/api/users/byIds")
+                .queryParam("ids", userIdsList.toArray());
+    
+        return webClient.get()
+                .uri(builder.toUriString())
+                .retrieve()
+                .bodyToFlux(User.class);
+    }
+    
 
     public Flux<Issue> getAllIssues() {
         return webClient.get()

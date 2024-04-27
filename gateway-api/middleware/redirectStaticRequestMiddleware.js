@@ -7,9 +7,6 @@ const redirectUploadImageMiddleware = (getUrlConfig, needsParams = false) => {
         const { baseUrl, path } = config;
         const url = `${baseUrl}${path}`;
 
-        console.log({FILE: req.file});
-        console.log({BODY: req.body});
-
         try {
             const form = new FormData();
             if (req.body.issueId) {

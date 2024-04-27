@@ -9,6 +9,20 @@ exports.getComments = async (req, res) => {
     }
 };
 
+exports.getCommentsByIssueId = async (req, res) => {
+    try {
+        const issueId = parseInt(req.params.issueId);
+        const comments = await Comment.find({ issueId: issueId });
+        if (comments.length) {
+            res.status(200).json(comments);
+        } else {
+            res.status(404).json({ message: 'No comments found for this issue ID' });
+        }
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+};
+
 exports.getCommentById = async (req, res) => {
     try {
         const comment = await Comment.findById(req.params.id);

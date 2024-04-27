@@ -9,7 +9,7 @@ import jakarta.validation.constraints.Size;
 @Getter
 @Setter
 public class User {
-    private Long id;
+    private Integer id;
 
     @NotBlank(message = "El nombre es obligatorio")
     @Size(min = 2, message = "El nombre debe tener al menos 2 caracteres")

@@ -13,7 +13,19 @@ public class UserService {
     private UserRepository userRepository;
 
     public List<User> findAllUsers() {
-        return userRepository.findAll();
+        List<User> users = userRepository.findAll();
+        for (User user : users) {
+            user.setPassword(null);
+        }
+        return users;
+    }
+
+    public List<User> findUsersByIds(List<Long> ids) {
+        List<User> users = userRepository.findByIds(ids);
+        for (User user : users) {
+            user.setPassword(null);
+        }
+        return users;
     }
 
     public User findUserById(Long id) {
@@ -24,7 +36,7 @@ public class UserService {
         if (userRepository.existsByEmail(user.getEmail())) {
             throw new RuntimeException("El correo electrónico ya está en uso.");
         }
-        
+
         return userRepository.save(user);
     }
 

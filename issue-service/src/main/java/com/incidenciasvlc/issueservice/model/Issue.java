@@ -4,6 +4,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.util.Date;
+import java.util.List;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
@@ -12,6 +13,8 @@ import jakarta.validation.constraints.Size;
 @Setter
 public class Issue {
     private Long id;
+
+    private List<Comment> comments;
 
     @NotBlank(message = "El título es obligatorio")
     @Size(max = 255, message = "El título no puede tener más de 255 caracteres")

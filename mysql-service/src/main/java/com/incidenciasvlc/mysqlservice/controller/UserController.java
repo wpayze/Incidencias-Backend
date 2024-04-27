@@ -22,6 +22,12 @@ public class UserController {
         return ResponseEntity.ok(users);
     }
 
+    @GetMapping("/byIds")
+    public ResponseEntity<List<User>> getUsersByIds(@RequestParam List<Long> ids) {
+        List<User> users = userService.findUsersByIds(ids);
+        return ResponseEntity.ok(users);
+    }
+
     @GetMapping("/{id}")
     public ResponseEntity<User> getUserById(@PathVariable Long id) {
         User user = userService.findUserById(id);

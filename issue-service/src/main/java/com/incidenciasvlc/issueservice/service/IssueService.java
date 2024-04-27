@@ -1,9 +1,17 @@
 package com.incidenciasvlc.issueservice.service;
 
+import java.util.ArrayList;
+import java.util.Map;
+import java.util.Set;
+import java.util.stream.Collectors;
+
 import org.springframework.stereotype.Service;
 
+import com.incidenciasvlc.issueservice.client.MongoServiceClient;
 import com.incidenciasvlc.issueservice.client.MysqlServiceClient;
+import com.incidenciasvlc.issueservice.model.Comment;
 import com.incidenciasvlc.issueservice.model.Issue;
+import com.incidenciasvlc.issueservice.model.User;
 
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -12,9 +20,11 @@ import reactor.core.publisher.Mono;
 public class IssueService {
 
     private final MysqlServiceClient mysqlServiceClient;
+    private final MongoServiceClient mongoServiceClient;
 
-    public IssueService(MysqlServiceClient mysqlServiceClient) {
+    public IssueService(MysqlServiceClient mysqlServiceClient, MongoServiceClient mongoServiceClient) {
         this.mysqlServiceClient = mysqlServiceClient;
+        this.mongoServiceClient = mongoServiceClient;
     }
 
     public Flux<Issue> findAllIssues() {
@@ -26,9 +36,35 @@ public class IssueService {
 
     public Mono<Issue> findIssueById(String id) {
         return mysqlServiceClient.getIssueById(id)
-                .onErrorResume(e -> {
-                    return Mono.empty();
-                });
+                .flatMap(issue -> mongoServiceClient.getCommentsByIssueId(id)
+                        .collectList()
+                        .onErrorResume(error -> {
+                            return Mono.just(new ArrayList<Comment>());
+                        })
+                        .flatMap(comments -> {
+                            issue.setComments(comments);
+
+                            if (comments.isEmpty())
+                                return Mono.just(issue);
+
+                            Set<Integer> userIds = comments.stream()
+                                    .map(Comment::getUserId)
+                                    .collect(Collectors.toSet());
+
+                            return fetchUsers(userIds)
+                                    .collectList()
+                                    .doOnNext(users -> {
+                                        Map<Integer, User> userMap = users.stream()
+                                                .collect(Collectors.toMap(User::getId, user -> user));
+                                        comments.forEach(comment -> comment.setUser(userMap.get(comment.getUserId())));
+                                    })
+                                    .thenReturn(issue);
+                        }))
+                .onErrorResume(e -> Mono.empty());
+    }
+
+    private Flux<User> fetchUsers(Set<Integer> userIds) {
+        return mysqlServiceClient.getUsersByIds(userIds);
     }
 
     public Mono<Issue> saveIssue(Issue issue) {
