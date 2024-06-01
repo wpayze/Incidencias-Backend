@@ -55,6 +55,13 @@ public class MysqlServiceClient {
                 .bodyToMono(Issue.class);
     }
 
+    public Flux<Issue> getIssuesByUserId(String id) {
+        return webClient.get()
+                .uri("/api/issues/user/{id}", id)
+                .retrieve()
+                .bodyToFlux(Issue.class);
+    }
+
     public Mono<Issue> createIssue(Issue issue) {
         return webClient.post()
                 .uri("/api/issues")

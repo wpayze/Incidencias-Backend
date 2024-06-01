@@ -34,6 +34,13 @@ public class IssueService {
                 });
     }
 
+    public Flux<Issue> findAllIssuesByUserId(String id) {
+        return mysqlServiceClient.getIssuesByUserId(id)
+                .onErrorResume(e -> {
+                    return Flux.empty();
+                });
+    }
+
     public Mono<Issue> findIssueById(String id) {
         return mysqlServiceClient.getIssueById(id)
                 .flatMap(issue -> mongoServiceClient.getCommentsByIssueId(id)

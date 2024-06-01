@@ -18,6 +18,10 @@ public class IssueService {
         return issueRepository.findAll();
     }
 
+    public List<Issue> getIssuesByUserId(Long userId) {
+        return issueRepository.findByUserId(userId);
+    }
+
     public Optional<Issue> findIssueById(Long id) {
         return issueRepository.findById(id);
     }

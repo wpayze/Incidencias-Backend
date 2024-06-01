@@ -29,6 +29,15 @@ public class IssueController {
                 .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
+    @GetMapping("/user/{userId}")
+    public ResponseEntity<List<Issue>> getIssuesByUserId(@PathVariable Long userId) {
+        List<Issue> issues = issueService.getIssuesByUserId(userId);
+        if (issues.isEmpty()) {
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
+        return new ResponseEntity<>(issues, HttpStatus.OK);
+    }
+
     @PostMapping
     public ResponseEntity<Issue> createIssue(@RequestBody Issue issue) {
         Issue newIssue = issueService.createIssue(issue);

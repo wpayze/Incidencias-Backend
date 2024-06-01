@@ -32,6 +32,11 @@ public class IssueController {
         return issueService.findAllIssues();
     }
 
+    @GetMapping("/user/{id}")
+    public Flux<Issue> getAllIssuesByUserId(@PathVariable String id) {
+        return issueService.findAllIssuesByUserId(id);
+    }
+
     @GetMapping("/{id}")
     public Mono<ResponseEntity<Issue>> getIssueById(@PathVariable String id) {
         return issueService.findIssueById(id)
