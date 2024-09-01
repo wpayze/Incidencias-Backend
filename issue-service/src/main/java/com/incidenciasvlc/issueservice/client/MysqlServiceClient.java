@@ -30,16 +30,15 @@ public class MysqlServiceClient {
 
     public Flux<User> getUsersByIds(Set<Integer> userIds) {
         List<Integer> userIdsList = new ArrayList<>(userIds);
-    
+
         UriComponentsBuilder builder = UriComponentsBuilder.fromUriString("/api/users/byIds")
                 .queryParam("ids", userIdsList.toArray());
-    
+
         return webClient.get()
                 .uri(builder.toUriString())
                 .retrieve()
                 .bodyToFlux(User.class);
     }
-    
 
     public Flux<Issue> getAllIssues() {
         return webClient.get()
@@ -92,7 +91,15 @@ public class MysqlServiceClient {
                 .bodyToMono(Status.class);
     }
 
-    public Flux<Category> getAllCategories () {
+    public Mono<Status> updateStatus(String id, Status status) {
+        return webClient.put()
+                .uri("/api/statuses/{id}", id)
+                .bodyValue(status)
+                .retrieve()
+                .bodyToMono(Status.class);
+    }
+
+    public Flux<Category> getAllCategories() {
         return webClient.get()
                 .uri("/api/categories")
                 .retrieve()
@@ -105,7 +112,7 @@ public class MysqlServiceClient {
                 .retrieve()
                 .bodyToMono(Category.class);
     }
-    
+
     public Mono<Category> createCategory(Category category) {
         return webClient.post()
                 .uri("/api/categories")
@@ -113,4 +120,13 @@ public class MysqlServiceClient {
                 .retrieve()
                 .bodyToMono(Category.class);
     }
+
+    public Mono<Category> updateCategory(String id, Category category) {
+        return webClient.put()
+                .uri("/api/categories/{id}", id)
+                .bodyValue(category)
+                .retrieve()
+                .bodyToMono(Category.class);
+    }
+
 }

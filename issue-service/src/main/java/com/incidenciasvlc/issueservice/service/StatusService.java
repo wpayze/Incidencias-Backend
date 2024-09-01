@@ -37,4 +37,11 @@ public class StatusService {
                     return Mono.error(e);
                 });
     }
+
+    public Mono<Status> updateStatus(String id, Status status) {
+        return mysqlServiceClient.updateStatus(id, status)
+                .onErrorResume(e -> {
+                    return Mono.error(e);
+                });
+    }
 }

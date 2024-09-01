@@ -2,6 +2,7 @@ package com.incidenciasvlc.issueservice.controller;
 
 import org.springframework.web.bind.annotation.*;
 import com.incidenciasvlc.issueservice.model.Category;
+import com.incidenciasvlc.issueservice.model.Status;
 import com.incidenciasvlc.issueservice.service.CategoryService;
 
 import reactor.core.publisher.Flux;
@@ -30,5 +31,10 @@ public class CategoryController {
     @PostMapping
     public Mono<Category> createCategory(@RequestBody Category category) {
         return categoryService.createCategory(category);
+    }
+
+    @PutMapping("/{id}")
+    public Mono<Category> updateCategory(@PathVariable String id, @RequestBody Category category) {
+        return categoryService.updateCategory(id, category);
     }
 }

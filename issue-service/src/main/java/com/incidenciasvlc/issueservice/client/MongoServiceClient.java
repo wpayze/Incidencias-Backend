@@ -26,6 +26,13 @@ public class MongoServiceClient {
                 .bodyToFlux(Comment.class);
     }
 
+    public Flux<Comment> getCommentsByUserId(String userId) {
+        return webClient.get()
+                .uri("/comments/user/{id}", userId)
+                .retrieve()
+                .bodyToFlux(Comment.class);
+    }
+
     public Mono<Comment> createComment(Comment comment) {
         return webClient.post()
                 .uri("/comments")

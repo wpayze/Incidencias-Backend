@@ -4,6 +4,7 @@ import org.springframework.stereotype.Service;
 
 import com.incidenciasvlc.issueservice.client.MysqlServiceClient;
 import com.incidenciasvlc.issueservice.model.Category;
+import com.incidenciasvlc.issueservice.model.Status;
 
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -33,6 +34,13 @@ public class CategoryService {
 
     public Mono<Category> createCategory(Category category) {
         return mysqlServiceClient.createCategory(category)
+                .onErrorResume(e -> {
+                    return Mono.error(e);
+                });
+    }
+
+    public Mono<Category> updateCategory(String id, Category category) {
+        return mysqlServiceClient.updateCategory(id, category)
                 .onErrorResume(e -> {
                     return Mono.error(e);
                 });

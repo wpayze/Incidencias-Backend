@@ -1,0 +1,32 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: issue-service
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: issue-service
+  template:
+    metadata:
+      labels:
+        app: issue-service
+    spec:
+      containers:
+        - name: issue-service
+          image: wilpaiz/issue-service:v1
+          ports:
+            - containerPort: 8080
+          env:
+            - name: SERVER_PORT
+              value: "8080"
+            - name: MYSQL_SERVICE_BASE_URL
+              value: "http://mysql-service:8084"
+            - name: MONGO_SERVICE_BASE_URL
+              value: "http://mongo-service:8083"
+            - name: AUTH_SERVICE_BASE_URL
+              value: "http://auth-service:8081"
+            - name: LOGGING_LEVEL_SECURITY
+              value: "DEBUG"
+            - name: LOGGING_LEVEL_WEB
+              value: "DEBUG"

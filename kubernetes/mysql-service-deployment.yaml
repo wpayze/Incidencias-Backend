@@ -1,0 +1,29 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mysql-service
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: mysql-service
+  template:
+    metadata:
+      labels:
+        app: mysql-service
+    spec:
+      containers:
+        - name: mysql-service
+          image: wilpaiz/mysql-service:v1
+          env:
+            - name: SPRING_DATASOURCE_URL
+              value: jdbc:mysql://mysql:3306/incidencias
+            - name: SPRING_DATASOURCE_USERNAME
+              value: root
+            - name: SPRING_DATASOURCE_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: mysql-pass
+                  key: password
+          ports:
+            - containerPort: 8084

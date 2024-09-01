@@ -1,0 +1,22 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mongo-service
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: mongo-service
+  template:
+    metadata:
+      labels:
+        app: mongo-service
+    spec:
+      containers:
+      - name: mongo-service
+        image: wilpaiz/mongo-service:v1
+        ports:
+        - containerPort: 8083
+        env:
+        - name: MONGO_URI
+          value: mongodb://mongo:27017/incidencias

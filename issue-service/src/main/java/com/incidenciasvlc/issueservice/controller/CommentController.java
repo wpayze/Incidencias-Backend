@@ -5,6 +5,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import com.incidenciasvlc.issueservice.model.Comment;
 import com.incidenciasvlc.issueservice.service.CommentService;
+
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 @RestController
@@ -15,6 +17,11 @@ public class CommentController {
 
     public CommentController(CommentService commentService) {
         this.commentService = commentService;
+    }
+
+    @GetMapping("/user/{userId}")
+    public Flux<Comment> getCommentsByUserId(@PathVariable String userId) {
+        return commentService.getCommentsByUserId(userId);
     }
 
     @PostMapping

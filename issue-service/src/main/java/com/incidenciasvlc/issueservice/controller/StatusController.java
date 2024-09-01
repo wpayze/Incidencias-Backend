@@ -32,4 +32,9 @@ public class StatusController {
     public Mono<Status> createStatus(@RequestBody Status status) {
         return statusService.createStatus(status);
     }
+
+    @PutMapping("/{id}")
+    public Mono<Status> updateStatus(@PathVariable String id, @RequestBody Status status) {
+        return statusService.updateStatus(id, status);
+    }
 }
