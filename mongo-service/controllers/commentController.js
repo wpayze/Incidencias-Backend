@@ -1,8 +1,9 @@
 const Comment = require('../models/Comment');
+const commentService = require('../services/commentService');
 
 exports.getComments = async (req, res) => {
     try {
-        const comments = await Comment.find();
+        const comments = await commentService.getComments();
         res.status(200).json(comments);
     } catch (error) {
         res.status(500).json({ message: error.message });
@@ -12,7 +13,7 @@ exports.getComments = async (req, res) => {
 exports.getCommentsByUserId = async (req, res) => {
     try {
         const userId = req.params.userId;
-        const comments = await Comment.find({ userId: userId }).sort({ createdAt: -1 });
+        const comments = await commentService.getCommentsByUserId(userId);
         res.status(200).json(comments);
     } catch (error) {
         res.status(500).json({ message: error.message });
@@ -22,7 +23,7 @@ exports.getCommentsByUserId = async (req, res) => {
 exports.getCommentsByIssueId = async (req, res) => {
     try {
         const issueId = parseInt(req.params.issueId);
-        const comments = await Comment.find({ issueId: issueId });
+        const comments = await commentService.getCommentsByIssueId(issueId);
         if (comments.length) {
             res.status(200).json(comments);
         } else {
@@ -35,7 +36,7 @@ exports.getCommentsByIssueId = async (req, res) => {
 
 exports.getCommentById = async (req, res) => {
     try {
-        const comment = await Comment.findById(req.params.id);
+        const comment = await commentService.getCommentById(req.params.id);
         if (comment) {
             res.status(200).json(comment);
         } else {
@@ -47,16 +48,8 @@ exports.getCommentById = async (req, res) => {
 };
 
 exports.createComment = async (req, res) => {
-    const comment = new Comment({
-        issueId: req.body.issueId,
-        userId: req.body.userId,
-        content: req.body.content,
-        createdAt: req.body.createdAt || new Date(),
-        parentId: req.body.parentId
-    });
-
     try {
-        const newComment = await comment.save();
+        const newComment = await commentService.createComment(req.body);
         res.status(201).json(newComment);
     } catch (error) {
         res.status(400).json({ message: error.message });
@@ -65,17 +58,7 @@ exports.createComment = async (req, res) => {
 
 exports.updateComment = async (req, res) => {
     try {
-        const comment = await Comment.findById(req.params.id);
-        if (!comment) {
-            return res.status(404).json({ message: "Comment not found" });
-        }
-
-        comment.issueId = req.body.issueId ?? comment.issueId;
-        comment.userId = req.body.userId ?? comment.userId;
-        comment.content = req.body.content ?? comment.content;
-        comment.parentId = req.body.parentId ?? comment.parentId;
-
-        const updatedComment = await comment.save();
+        const updatedComment = await commentService.updateComment(req.params.id, req.body);
         res.status(200).json(updatedComment);
     } catch (error) {
         res.status(400).json({ message: error.message });
@@ -84,11 +67,7 @@ exports.updateComment = async (req, res) => {
 
 exports.deleteComment = async (req, res) => {
     try {
-        const comment = await Comment.findById(req.params.id);
-        if (!comment) {
-            return res.status(404).json({ message: "Comment not found" });
-        }
-        await comment.remove();
+        await commentService.deleteComment(req.params.id);
         res.status(200).json({ message: "Comment deleted" });
     } catch (error) {
         res.status(500).json({ message: error.message });

@@ -28,4 +28,8 @@ public class UserService {
     public Mono<User> getUserByEmail(String email) {
         return mysqlServiceClient.getUserByEmail(email);
     }
+
+    public Mono<User> updateUser(User user) {
+        return mysqlServiceClient.updateUser(user);
+    }
 }

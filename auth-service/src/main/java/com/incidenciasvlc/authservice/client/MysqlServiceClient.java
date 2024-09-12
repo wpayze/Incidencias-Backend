@@ -49,4 +49,11 @@ public class MysqlServiceClient {
                 .bodyToMono(User.class);
     }
 
+    public Mono<User> updateUser(User user) {
+        return webClient.put()
+                .uri("/api/users/{id}", user.getId())
+                .bodyValue(user)
+                .retrieve()
+                .bodyToMono(User.class);
+    }
 }

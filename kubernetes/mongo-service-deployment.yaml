@@ -15,6 +15,7 @@ spec:
       containers:
       - name: mongo-service
         image: wilpaiz/mongo-service:v1
+        imagePullPolicy: Always
         ports:
         - containerPort: 8083
         env:

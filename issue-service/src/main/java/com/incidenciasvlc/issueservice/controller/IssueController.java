@@ -6,6 +6,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
@@ -48,5 +49,12 @@ public class IssueController {
     @ResponseStatus(HttpStatus.CREATED)
     public Mono<Issue> createIssue(@RequestBody Issue issue) {
         return issueService.saveIssue(issue);
+    }
+    
+    @PutMapping("/{id}")
+    public Mono<ResponseEntity<Issue>> updateIssue(@PathVariable String id, @RequestBody Issue issue) {
+        return issueService.updateIssue(id, issue)
+                .map(updatedIssue -> ResponseEntity.ok(updatedIssue))
+                .defaultIfEmpty(ResponseEntity.notFound().build());
     }
 }

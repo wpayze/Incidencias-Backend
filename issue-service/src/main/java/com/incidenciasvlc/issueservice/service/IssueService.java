@@ -80,4 +80,13 @@ public class IssueService {
                     return Mono.error(e);
                 });
     }
+
+    public Mono<Issue> updateIssue(String id, Issue issue) {
+        return findIssueById(id) 
+            .flatMap(existingIssue -> {
+                issue.setId(existingIssue.getId()); 
+                return mysqlServiceClient.updateIssue(issue);
+            })
+            .onErrorResume(e -> Mono.error(new Exception("Error al actualizar la incidencia: " + e.getMessage())));
+    }
 }

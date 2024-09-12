@@ -47,5 +47,8 @@ kubectl delete -f gateway-service.yaml
 echo Eliminando ingress...
 kubectl delete -f ingress.yaml
 
+kubectl delete -f scaledobject.yaml
+kubectl delete -f rabbitJob.yaml
+
 echo Eliminación de Bases de Datos y Microservicios completada exitosamente.
 pause

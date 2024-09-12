@@ -1,0 +1,25 @@
+apiVersion: keda.sh/v1alpha1
+kind: ScaledJob
+metadata:
+  name: rabbitmq-job-scaler
+  namespace: default
+spec:
+  jobTargetRef:
+    template:
+      spec:
+        containers:
+        - name: image-processor
+          image: wilpaiz/python-job:v1.1
+          command: ["python", "script.py"]
+        restartPolicy: Never
+  pollingInterval: 30 
+  successfulJobsHistoryLimit: 5
+  failedJobsHistoryLimit: 5
+  maxReplicaCount: 10
+  triggers:
+  - type: rabbitmq
+    metadata:
+      queueName: imagenes
+      host: "amqp://guest:guest@rabbitmq.default.svc.cluster.local:5672/"
+      mode: QueueLength
+      value: "1"

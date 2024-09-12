@@ -46,8 +46,12 @@ echo Aplicando Deployment de gateway-api...
 kubectl apply -f gateway-deployment.yaml
 kubectl apply -f gateway-service.yaml
 
-echo Creando ingress...
-kubectl apply -f ingress.yaml
+kubectl apply -f rabbit.yaml
+kubectl apply -f scaledobject.yaml
+@REM kubectl apply -f rabbitJob.yaml
+
+@REM echo Creando ingress...
+@REM kubectl apply -f ingress.yaml
 
 echo Despliegue de Bases de Datos y Microservicios completado exitosamente.
 pause

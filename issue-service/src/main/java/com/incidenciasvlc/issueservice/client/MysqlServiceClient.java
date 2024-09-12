@@ -69,6 +69,14 @@ public class MysqlServiceClient {
                 .bodyToMono(Issue.class);
     }
 
+    public Mono<Issue> updateIssue(Issue issue) {
+        return webClient.put()
+                .uri("/api/issues/{id}", issue.getId())
+                .bodyValue(issue)
+                .retrieve()
+                .bodyToMono(Issue.class);
+    }
+
     public Flux<Status> getAllStatuses() {
         return webClient.get()
                 .uri("/api/statuses")

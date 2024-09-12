@@ -15,6 +15,7 @@ spec:
       containers:
         - name: issue-service
           image: wilpaiz/issue-service:v1
+          imagePullPolicy: Always
           ports:
             - containerPort: 8080
           env:

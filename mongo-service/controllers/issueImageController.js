@@ -23,6 +23,9 @@ exports.getIssueImageById = async (req, res) => {
 };
 
 exports.createIssueImage = async (req, res) => {
+    console.log('Iniciando creación de IssueImage...');
+    console.log('Datos recibidos del request:', req.body);
+
     const issueImage = new IssueImage({
         issueId: req.body.issueId,
         imageType: req.body.imageType,
@@ -30,10 +33,14 @@ exports.createIssueImage = async (req, res) => {
         uploadedAt: req.body.uploadedAt || new Date(),
     });
 
+    console.log('Objeto IssueImage a guardar:', issueImage);
+
     try {
         const newIssueImage = await issueImage.save();
+        console.log('Imagen del issue creada con éxito:', newIssueImage);
         res.status(201).json(newIssueImage);
     } catch (error) {
+        console.error('Error al crear la imagen del issue:', error.message);
         res.status(400).json({ message: error.message });
     }
 };

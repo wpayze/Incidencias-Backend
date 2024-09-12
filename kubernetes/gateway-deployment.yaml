@@ -15,6 +15,7 @@ spec:
       containers:
         - name: gateway-api
           image: wilpaiz/gateway-api:v1
+          imagePullPolicy: Always
           ports:
             - containerPort: 3000
           env:
